@@ -181,8 +181,8 @@ export default function Home() {
                 className="text-5xl md:text-6xl font-bold text-[#1a1a1a] mb-6 leading-tight"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
-                Cook your <span className="text-[#003314]">favorite dishes</span>
-                <br />at home for less
+                <span className="text-[#003314]">Champagne</span> taste
+                <br />on a beer budget
               </h2>
               <p className="text-xl text-[#666666] max-w-lg mx-auto mb-12">
                 Enter any restaurant dish and get the recipe + grocery list with savings
