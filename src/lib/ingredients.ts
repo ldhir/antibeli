@@ -171,7 +171,7 @@ export const INGREDIENT_TRANSLATIONS: Record<string, string> = {
   // French
   ail: "garlic",
   oignon: "onion",
-  tomate: "tomato",
+  // tomate same as Spanish
   citron: "lemon",
   pomme: "apple",
   poire: "pear",
@@ -204,10 +204,10 @@ export const INGREDIENT_TRANSLATIONS: Record<string, string> = {
   mela: "apple",
   fragola: "strawberry",
   carota: "carrot",
-  patata: "potato",
+  // patata same as Spanish
   riso: "rice",
   fagioli: "beans",
-  pollo: "chicken",
+  // pollo same as Spanish
   manzo: "beef",
   maiale: "pork",
   pesce: "fish",
@@ -222,7 +222,7 @@ export const INGREDIENT_TRANSLATIONS: Record<string, string> = {
   zucchero: "sugar",
   basilico: "basil",
   prezzemolo: "parsley",
-  origano: "oregano",
+  // origano same as Spanish
   rosmarino: "rosemary",
 
   // Chinese (Pinyin)
@@ -310,7 +310,7 @@ export const SPELLING_CORRECTIONS: Record<string, string> = {
   "safforn": "saffron",
   "safron": "saffron",
   "paprica": "paprika",
-  "paprica": "paprika",
+  "paprika": "paprika",
   "cayanne": "cayenne",
   "cayene": "cayenne",
   "jalepeno": "jalapeno",

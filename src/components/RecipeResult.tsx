@@ -1,6 +1,7 @@
 "use client";
 
-import { RecipeResult as RecipeResultType } from "@/lib/types";
+import { useState } from "react";
+import { RecipeResult as RecipeResultType, HostingType } from "@/lib/types";
 import { useStore } from "@/lib/store";
 
 interface RecipeResultProps {
@@ -9,7 +10,21 @@ interface RecipeResultProps {
 }
 
 export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
-  const { isInPantry, addToCart } = useStore();
+  const { isInPantry, addToCart, addToQueue, mealQueue, createHostingEvent } = useStore();
+  const [servings, setServings] = useState(recipe.servings);
+  const [isHosting, setIsHosting] = useState(false);
+  const [hostingType, setHostingType] = useState<HostingType>("private");
+  const [guestCount, setGuestCount] = useState(2);
+  const [addedToQueue, setAddedToQueue] = useState(false);
+  const [inviteMessage, setInviteMessage] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [eventTime, setEventTime] = useState("7:00 PM");
+  const [showHostingDetails, setShowHostingDetails] = useState(false);
+
+  // Check if already in queue
+  const isAlreadyQueued = mealQueue.some(
+    (meal) => meal.recipe.dish === recipe.dish && !meal.isCooked
+  );
 
   // Calculate what's in pantry vs what needs to be bought
   const groceryWithPantryStatus = recipe.grocery_list.map((item) => ({
@@ -25,6 +40,40 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
   const handleAddToCart = () => {
     addToCart(itemsToBuy, recipe.dish);
   };
+
+  const handleAddToQueue = () => {
+    addToQueue(recipe, servings, isHosting, isHosting ? guestCount : 0);
+    setAddedToQueue(true);
+    setTimeout(() => setAddedToQueue(false), 2000);
+  };
+
+  const handleHostingToggle = () => {
+    if (!isHosting) {
+      setIsHosting(true);
+      setShowHostingDetails(true);
+      // Set default date to tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      setEventDate(tomorrow.toISOString().split("T")[0]);
+      // Generate default invite message
+      setInviteMessage(`You're invited to ${recipe.dish} night at my place! Come hungry.`);
+    } else {
+      setIsHosting(false);
+      setShowHostingDetails(false);
+    }
+  };
+
+  const generateLumaLink = () => {
+    // In a real app, this would integrate with Luma API
+    // For now, we'll create a mock link
+    const eventTitle = encodeURIComponent(`${recipe.dish} Dinner Party`);
+    const eventDesc = encodeURIComponent(`Join us for a homemade ${recipe.dish} dinner! Save money, eat well, and have fun together.`);
+    return `https://lu.ma/create?title=${eventTitle}&description=${eventDesc}`;
+  };
+
+  // Calculate cost per serving
+  const costPerServing = actualCost / recipe.servings;
+  const adjustedCost = costPerServing * servings;
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-10">
@@ -99,6 +148,259 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
             </span>
           </div>
         </div>
+      </div>
+
+      {/* Add to Queue Section */}
+      <div className="bg-white rounded-3xl shadow-xl shadow-black/5 p-8 border border-[#FF6B7A]/10">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          {/* Left: Cost per meal info */}
+          <div>
+            <h3
+              className="text-xl font-bold text-[#1a1a1a] mb-2"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
+              Add to Your Meal Queue
+            </h3>
+            <p className="text-[#666666]" style={{ fontFamily: "var(--font-accent)" }}>
+              <span className="text-[#FF6B7A] font-bold text-2xl">${costPerServing.toFixed(2)}</span>
+              <span className="text-sm"> per meal</span>
+              <span className="mx-2 text-[#ccc]">|</span>
+              <span className="text-sm">
+                {servings} {servings === 1 ? "meal" : "meals"} = ${adjustedCost.toFixed(2)}
+              </span>
+            </p>
+          </div>
+
+          {/* Right: Controls */}
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Servings control */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-[#666666]" style={{ fontFamily: "var(--font-accent)" }}>
+                Servings:
+              </span>
+              <div className="flex items-center bg-gray-100 rounded-full">
+                <button
+                  onClick={() => setServings(Math.max(1, servings - 1))}
+                  className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                >
+                  -
+                </button>
+                <span className="w-8 text-center font-bold text-[#1a1a1a]">{servings}</span>
+                <button
+                  onClick={() => setServings(servings + 1)}
+                  className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Hosting toggle */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleHostingToggle}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all ${
+                  isHosting
+                    ? "bg-[#FF6B7A] text-white"
+                    : "bg-gray-100 text-[#666666] hover:bg-gray-200"
+                }`}
+                style={{ fontFamily: "var(--font-accent)" }}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                Hosting?
+              </button>
+              {isHosting && (
+                <div className="flex items-center bg-gray-100 rounded-full">
+                  <button
+                    onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
+                    className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                  >
+                    -
+                  </button>
+                  <span className="w-8 text-center font-bold text-[#1a1a1a]">{guestCount}</span>
+                  <button
+                    onClick={() => setGuestCount(guestCount + 1)}
+                    className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Add to Queue button */}
+            <button
+              onClick={handleAddToQueue}
+              disabled={isAlreadyQueued || addedToQueue}
+              style={{ fontFamily: "var(--font-accent)" }}
+              className={`px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2 ${
+                addedToQueue
+                  ? "bg-green-500 text-white"
+                  : isAlreadyQueued
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-[#FF6B7A] hover:bg-[#FF5468] text-white hover:shadow-lg hover:shadow-[#FF6B7A]/30"
+              }`}
+            >
+              {addedToQueue ? (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Added!
+                </>
+              ) : isAlreadyQueued ? (
+                "Already Queued"
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add to Queue
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Hosting Details Panel */}
+        {showHostingDetails && isHosting && (
+          <div className="mt-6 pt-6 border-t border-gray-100">
+            <h4 className="font-bold text-[#1a1a1a] mb-4" style={{ fontFamily: "var(--font-heading)" }}>
+              Hosting Details
+            </h4>
+
+            {/* Private vs Public Toggle */}
+            <div className="flex gap-3 mb-6">
+              <button
+                onClick={() => setHostingType("private")}
+                className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all ${
+                  hostingType === "private"
+                    ? "border-[#FF6B7A] bg-[#FF6B7A]/5"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className={`w-5 h-5 ${hostingType === "private" ? "text-[#FF6B7A]" : "text-gray-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span className={`font-bold ${hostingType === "private" ? "text-[#FF6B7A]" : "text-gray-600"}`} style={{ fontFamily: "var(--font-accent)" }}>
+                    Private
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500">Invite friends directly</p>
+              </button>
+              <button
+                onClick={() => setHostingType("public")}
+                className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all ${
+                  hostingType === "public"
+                    ? "border-[#FF6B7A] bg-[#FF6B7A]/5"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className={`w-5 h-5 ${hostingType === "public" ? "text-[#FF6B7A]" : "text-gray-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                  </svg>
+                  <span className={`font-bold ${hostingType === "public" ? "text-[#FF6B7A]" : "text-gray-600"}`} style={{ fontFamily: "var(--font-accent)" }}>
+                    Public
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500">Create Luma event</p>
+              </button>
+            </div>
+
+            {/* Date & Time */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-2" style={{ fontFamily: "var(--font-accent)" }}>
+                  Date
+                </label>
+                <input
+                  type="date"
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-[#FF6B7A] focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-600 mb-2" style={{ fontFamily: "var(--font-accent)" }}>
+                  Time
+                </label>
+                <select
+                  value={eventTime}
+                  onChange={(e) => setEventTime(e.target.value)}
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-[#FF6B7A] focus:outline-none"
+                >
+                  <option value="12:00 PM">12:00 PM</option>
+                  <option value="1:00 PM">1:00 PM</option>
+                  <option value="5:00 PM">5:00 PM</option>
+                  <option value="6:00 PM">6:00 PM</option>
+                  <option value="7:00 PM">7:00 PM</option>
+                  <option value="8:00 PM">8:00 PM</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Private - Invite Message */}
+            {hostingType === "private" && (
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-600 mb-2" style={{ fontFamily: "var(--font-accent)" }}>
+                  Invite Message
+                </label>
+                <textarea
+                  value={inviteMessage}
+                  onChange={(e) => setInviteMessage(e.target.value)}
+                  rows={3}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF6B7A] focus:outline-none resize-none"
+                  placeholder="Write a nice invite for your friends..."
+                />
+                <div className="mt-3 p-4 bg-gray-50 rounded-xl">
+                  <p className="text-xs text-gray-500 mb-2">Preview:</p>
+                  <p className="text-sm text-gray-700 italic">&ldquo;{inviteMessage}&rdquo;</p>
+                </div>
+              </div>
+            )}
+
+            {/* Public - Luma Integration */}
+            {hostingType === "public" && (
+              <div className="mb-6">
+                <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-100">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">L</span>
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-800" style={{ fontFamily: "var(--font-accent)" }}>Luma Event</p>
+                      <p className="text-xs text-gray-500">Create a public event page</p>
+                    </div>
+                  </div>
+                  <a
+                    href={generateLumaLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold rounded-full hover:opacity-90 transition-opacity"
+                    style={{ fontFamily: "var(--font-accent)" }}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Create Luma Event
+                  </a>
+                </div>
+                <p className="text-xs text-gray-500 mt-3">
+                  A Luma event page will be created where people can RSVP. Share the link on social media!
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Two Column Layout */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useStore } from "@/lib/store";
 
@@ -18,7 +18,18 @@ export default function PantryPage() {
     customEssentials,
     addCustomEssential,
     removeCustomEssential,
+    getReservedIngredients,
+    mealQueue,
   } = useStore();
+
+  // Get reserved ingredients (memoized to prevent re-renders)
+  const reservedIngredients = useMemo(() => getReservedIngredients(), [mealQueue]);
+
+  // Helper to check if an item is reserved
+  const getReservedMeals = (itemName: string): string[] => {
+    const normalized = itemName.toLowerCase().replace(/[^a-z0-9]/g, "").replace(/s$/, "");
+    return reservedIngredients.get(normalized) || [];
+  };
 
   const [newItem, setNewItem] = useState("");
   const [newQuantity, setNewQuantity] = useState(1);
@@ -69,13 +80,34 @@ export default function PantryPage() {
                 <span className="text-[#FF6B7A]">Beli</span> at Home
               </h1>
             </Link>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <Link
                 href="/"
-                className="badge hover:bg-[#FF6B7A]/10 transition-colors cursor-pointer"
+                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                style={{ fontFamily: 'var(--font-accent)' }}
               >
-                Back to Recipes
+                My Meals
               </Link>
+              <Link
+                href="/discover"
+                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                style={{ fontFamily: 'var(--font-accent)' }}
+              >
+                Discover
+              </Link>
+              <Link
+                href="/host"
+                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                style={{ fontFamily: 'var(--font-accent)' }}
+              >
+                Host
+              </Link>
+              <span
+                className="text-[#FF6B7A] font-bold"
+                style={{ fontFamily: 'var(--font-accent)' }}
+              >
+                Pantry
+              </span>
             </div>
           </div>
         </div>
@@ -289,18 +321,41 @@ export default function PantryPage() {
               </div>
             ) : (
               <ul className="space-y-3">
-                {pantry.map((item) => (
+                {pantry.map((item) => {
+                  const reservedFor = getReservedMeals(item.englishName);
+                  const isReserved = reservedFor.length > 0;
+
+                  return (
                   <li
                     key={item.name}
-                    className="flex justify-between items-center py-3 px-4 bg-[#FAFAFA] rounded-xl border border-[#FF6B7A]/5 hover:border-[#FF6B7A]/20 transition-all"
+                    className={`flex justify-between items-center py-3 px-4 rounded-xl border transition-all ${
+                      isReserved
+                        ? "bg-amber-50 border-amber-200 hover:border-amber-300"
+                        : "bg-[#FAFAFA] border-[#FF6B7A]/5 hover:border-[#FF6B7A]/20"
+                    }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
+                      <span className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        isReserved ? "bg-amber-100" : "bg-green-100"
+                      }`}>
+                        {isReserved ? (
+                          <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
                       </span>
-                      <span className="font-medium text-[#1a1a1a]">{item.displayName}</span>
+                      <div>
+                        <span className="font-medium text-[#1a1a1a]">{item.displayName}</span>
+                        {isReserved && (
+                          <div className="text-xs text-amber-600 mt-0.5" style={{ fontFamily: 'var(--font-accent)' }}>
+                            Reserved for: {reservedFor.join(", ")}
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <div className="flex items-center gap-3">
                       {/* Quantity Controls */}
@@ -351,7 +406,8 @@ export default function PantryPage() {
                       </button>
                     </div>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             )}
           </div>

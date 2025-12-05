@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { GroceryItem } from "./types";
+import { GroceryItem, QueuedMeal, LeftoverSuggestion, RecipeResult, HostingEvent, QuickBiteSuggestion, HostingType } from "./types";
 import { processIngredient } from "./ingredients";
 
 // Pantry item - what user has at home
@@ -45,6 +45,27 @@ interface StoreContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
+
+  // Meal Queue
+  mealQueue: QueuedMeal[];
+  addToQueue: (recipe: RecipeResult, servings?: number, isHosting?: boolean, guestCount?: number) => void;
+  removeFromQueue: (id: string) => void;
+  updateQueuedMeal: (id: string, updates: Partial<Pick<QueuedMeal, "servings" | "isHosting" | "guestCount">>) => void;
+  markAsCooked: (id: string) => void;
+  clearQueue: () => void;
+  getReservedIngredients: () => Map<string, string[]>; // ingredient -> which meals need it
+  leftoverSuggestions: LeftoverSuggestion[];
+  setLeftoverSuggestions: (suggestions: LeftoverSuggestion[]) => void;
+
+  // Hosting Events
+  hostingEvents: HostingEvent[];
+  createHostingEvent: (mealId: string, hostingType: HostingType, details: { inviteMessage?: string; eventDate: string; eventTime?: string }) => HostingEvent | null;
+  removeHostingEvent: (eventId: string) => void;
+  getHostingEventForMeal: (mealId: string) => HostingEvent | undefined;
+
+  // Quick bite suggestions from pantry
+  quickBiteSuggestions: QuickBiteSuggestion[];
+  setQuickBiteSuggestions: (suggestions: QuickBiteSuggestion[]) => void;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -90,11 +111,18 @@ const DEFAULT_ESSENTIALS = [
   "Soy Sauce",
 ];
 
+// Generate unique ID
+const generateId = () => Math.random().toString(36).substring(2, 9);
+
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [pantry, setPantry] = useState<PantryItem[]>([]);
   const [customEssentials, setCustomEssentials] = useState<string[]>(DEFAULT_ESSENTIALS);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [mealQueue, setMealQueue] = useState<QueuedMeal[]>([]);
+  const [leftoverSuggestions, setLeftoverSuggestions] = useState<LeftoverSuggestion[]>([]);
+  const [hostingEvents, setHostingEvents] = useState<HostingEvent[]>([]);
+  const [quickBiteSuggestions, setQuickBiteSuggestions] = useState<QuickBiteSuggestion[]>([]);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -125,6 +153,42 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         console.error("Failed to parse cart", e);
       }
     }
+
+    const savedMealQueue = localStorage.getItem("beli-meal-queue");
+    if (savedMealQueue) {
+      try {
+        setMealQueue(JSON.parse(savedMealQueue));
+      } catch (e) {
+        console.error("Failed to parse meal queue", e);
+      }
+    }
+
+    const savedLeftoverSuggestions = localStorage.getItem("beli-leftover-suggestions");
+    if (savedLeftoverSuggestions) {
+      try {
+        setLeftoverSuggestions(JSON.parse(savedLeftoverSuggestions));
+      } catch (e) {
+        console.error("Failed to parse leftover suggestions", e);
+      }
+    }
+
+    const savedHostingEvents = localStorage.getItem("beli-hosting-events");
+    if (savedHostingEvents) {
+      try {
+        setHostingEvents(JSON.parse(savedHostingEvents));
+      } catch (e) {
+        console.error("Failed to parse hosting events", e);
+      }
+    }
+
+    const savedQuickBites = localStorage.getItem("beli-quick-bites");
+    if (savedQuickBites) {
+      try {
+        setQuickBiteSuggestions(JSON.parse(savedQuickBites));
+      } catch (e) {
+        console.error("Failed to parse quick bites", e);
+      }
+    }
   }, []);
 
   // Save pantry to localStorage
@@ -141,6 +205,26 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem("beli-cart", JSON.stringify(cart));
   }, [cart]);
+
+  // Save meal queue to localStorage
+  useEffect(() => {
+    localStorage.setItem("beli-meal-queue", JSON.stringify(mealQueue));
+  }, [mealQueue]);
+
+  // Save leftover suggestions to localStorage
+  useEffect(() => {
+    localStorage.setItem("beli-leftover-suggestions", JSON.stringify(leftoverSuggestions));
+  }, [leftoverSuggestions]);
+
+  // Save hosting events to localStorage
+  useEffect(() => {
+    localStorage.setItem("beli-hosting-events", JSON.stringify(hostingEvents));
+  }, [hostingEvents]);
+
+  // Save quick bite suggestions to localStorage
+  useEffect(() => {
+    localStorage.setItem("beli-quick-bites", JSON.stringify(quickBiteSuggestions));
+  }, [quickBiteSuggestions]);
 
   const addToPantry = (item: string, quantity: number = 1, unit: string = "units") => {
     const trimmed = item.trim();
@@ -254,6 +338,117 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const closeCart = () => setIsCartOpen(false);
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
+  // Meal Queue functions
+  const addToQueue = (
+    recipe: RecipeResult,
+    servings: number = recipe.servings,
+    isHosting: boolean = false,
+    guestCount: number = 0
+  ) => {
+    const newMeal: QueuedMeal = {
+      id: generateId(),
+      recipe,
+      servings,
+      isHosting,
+      guestCount,
+      isCooked: false,
+      dateAdded: new Date().toISOString(),
+    };
+    setMealQueue((prev) => [...prev, newMeal]);
+
+    // Auto-add ingredients to cart (only items not in pantry)
+    const itemsToBuy = recipe.grocery_list.filter((item) => !isInPantry(item.item));
+    if (itemsToBuy.length > 0) {
+      // Merge with cart without opening it
+      setCart((prev) => {
+        const merged = [...prev];
+        for (const newItem of itemsToBuy) {
+          const existingIndex = merged.findIndex(
+            (m) => normalizeItemName(m.item) === normalizeItemName(newItem.item)
+          );
+          if (existingIndex === -1) {
+            merged.push({ ...newItem, recipeSource: recipe.dish });
+          }
+        }
+        return merged;
+      });
+    }
+  };
+
+  const removeFromQueue = (id: string) => {
+    setMealQueue((prev) => prev.filter((meal) => meal.id !== id));
+  };
+
+  const updateQueuedMeal = (
+    id: string,
+    updates: Partial<Pick<QueuedMeal, "servings" | "isHosting" | "guestCount">>
+  ) => {
+    setMealQueue((prev) =>
+      prev.map((meal) => (meal.id === id ? { ...meal, ...updates } : meal))
+    );
+  };
+
+  const markAsCooked = (id: string) => {
+    setMealQueue((prev) =>
+      prev.map((meal) => (meal.id === id ? { ...meal, isCooked: true } : meal))
+    );
+  };
+
+  const clearQueue = () => {
+    setMealQueue([]);
+    setLeftoverSuggestions([]);
+  };
+
+  // Get ingredients reserved for upcoming meals (for pantry yellow warnings)
+  const getReservedIngredients = (): Map<string, string[]> => {
+    const reserved = new Map<string, string[]>();
+
+    // Only consider uncooked meals
+    const upcomingMeals = mealQueue.filter((meal) => !meal.isCooked);
+
+    for (const meal of upcomingMeals) {
+      for (const item of meal.recipe.grocery_list) {
+        const normalized = normalizeItemName(item.item);
+        const existing = reserved.get(normalized) || [];
+        reserved.set(normalized, [...existing, meal.recipe.dish]);
+      }
+    }
+
+    return reserved;
+  };
+
+  // Hosting Event functions
+  const createHostingEvent = (
+    mealId: string,
+    hostingType: HostingType,
+    details: { inviteMessage?: string; eventDate: string; eventTime?: string }
+  ): HostingEvent | null => {
+    const meal = mealQueue.find((m) => m.id === mealId);
+    if (!meal) return null;
+
+    const newEvent: HostingEvent = {
+      id: generateId(),
+      meal,
+      hostingType,
+      inviteMessage: details.inviteMessage,
+      eventDate: details.eventDate,
+      eventTime: details.eventTime,
+      createdAt: new Date().toISOString(),
+      isActive: true,
+    };
+
+    setHostingEvents((prev) => [...prev, newEvent]);
+    return newEvent;
+  };
+
+  const removeHostingEvent = (eventId: string) => {
+    setHostingEvents((prev) => prev.filter((event) => event.id !== eventId));
+  };
+
+  const getHostingEventForMeal = (mealId: string): HostingEvent | undefined => {
+    return hostingEvents.find((event) => event.meal.id === mealId && event.isActive);
+  };
+
   return (
     <StoreContext.Provider
       value={{
@@ -276,6 +471,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         openCart,
         closeCart,
         toggleCart,
+        mealQueue,
+        addToQueue,
+        removeFromQueue,
+        updateQueuedMeal,
+        markAsCooked,
+        clearQueue,
+        getReservedIngredients,
+        leftoverSuggestions,
+        setLeftoverSuggestions,
+        hostingEvents,
+        createHostingEvent,
+        removeHostingEvent,
+        getHostingEventForMeal,
+        quickBiteSuggestions,
+        setQuickBiteSuggestions,
       }}
     >
       {children}
