@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import DishInput from "@/components/DishInput";
 import RecipeResult from "@/components/RecipeResult";
 import { RecipeResult as RecipeResultType, DishInput as DishInputType } from "@/lib/types";
 import { useStore } from "@/lib/store";
 
-export default function DiscoverPage() {
+function DiscoverContent() {
+  const searchParams = useSearchParams();
+  const dishParam = searchParams.get("dish");
+  const hasAutoSubmitted = useRef(false);
+
   const [recipe, setRecipe] = useState<RecipeResultType | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +47,14 @@ export default function DiscoverPage() {
     setRecipe(null);
     setError(null);
   };
+
+  // Auto-submit if dish param is present
+  useEffect(() => {
+    if (dishParam && !hasAutoSubmitted.current && !recipe && !isLoading) {
+      hasAutoSubmitted.current = true;
+      handleSubmit({ type: "text", text: dishParam });
+    }
+  }, [dishParam]);
 
   return (
     <main className="min-h-screen relative">
@@ -176,5 +189,17 @@ export default function DiscoverPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function DiscoverPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-[#FF6B7A]">Loading...</div>
+      </div>
+    }>
+      <DiscoverContent />
+    </Suspense>
   );
 }

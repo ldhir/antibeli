@@ -243,9 +243,10 @@ export default function Home() {
                   ) : (
                     <div className="grid md:grid-cols-2 gap-4">
                       {quickBiteSuggestions.map((suggestion, index) => (
-                        <div
+                        <Link
                           key={index}
-                          className="rounded-xl p-4 border border-gray-100 bg-gray-50 hover:border-[#FF6B7A]/30 transition-all"
+                          href={`/discover?dish=${encodeURIComponent(suggestion.name)}`}
+                          className="rounded-xl p-4 border border-gray-100 bg-gray-50 hover:border-[#FF6B7A]/30 hover:shadow-md cursor-pointer transition-all block"
                         >
                           <div className="flex items-start justify-between mb-2">
                             <h4 className="font-bold text-[#1a1a1a]">{suggestion.name}</h4>
@@ -269,7 +270,7 @@ export default function Home() {
                             </span>
                             <span>{suggestion.ingredients.slice(0, 3).join(", ")}</span>
                           </div>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   )}
