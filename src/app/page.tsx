@@ -1,65 +1,140 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import DishInput from "@/components/DishInput";
+import RecipeResult from "@/components/RecipeResult";
+import { RecipeResult as RecipeResultType, DishInput as DishInputType } from "@/lib/types";
+import { useStore } from "@/lib/store";
 
 export default function Home() {
+  const [recipe, setRecipe] = useState<RecipeResultType | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { cart, openCart, pantry } = useStore();
+
+  const handleSubmit = async (input: DishInputType) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/generate-recipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to generate recipe");
+      }
+
+      const data = await response.json();
+      setRecipe(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleReset = () => {
+    setRecipe(null);
+    setError(null);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="min-h-screen relative">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#FF6B7A]/10 shadow-sm">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+              <span className="text-[#FF6B7A]">Beli</span> at Home
+            </h1>
+            <Link
+              href="/pantry"
+              className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+              style={{ fontFamily: 'var(--font-accent)' }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Pantry
+            </Link>
+            <button
+              onClick={openCart}
+              className="relative p-2.5 bg-[#FF6B7A] hover:bg-[#FF5468] text-white rounded-full transition-all hover:shadow-lg hover:shadow-[#FF6B7A]/30"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-white text-[#FF6B7A] text-xs font-bold rounded-full flex items-center justify-center shadow-md">
+                  {cart.length}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="px-6 py-12">
+        {!recipe ? (
+          <div className="max-w-2xl mx-auto">
+            {/* Hero Section */}
+            <div className="text-center mb-16 relative">
+              <div className="badge mb-8">Save up to 80% on your favorite meals</div>
+              <h2
+                className="text-5xl md:text-6xl font-bold text-[#1a1a1a] mb-6 leading-tight"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Cook your <span className="text-[#FF6B7A]">favorite dishes</span>
+                <br />at home for less
+              </h2>
+              <p className="text-xl text-[#666666] max-w-lg mx-auto">
+                Enter any restaurant dish and get the recipe + grocery list with savings
+              </p>
+            </div>
+
+            {/* Input Component */}
+            <DishInput onSubmit={handleSubmit} isLoading={isLoading} />
+
+            {/* Error Display */}
+            {error && (
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 text-center">
+                {error}
+              </div>
+            )}
+
+            {/* Example Dishes */}
+            <div className="mt-16 text-center">
+              <p className="text-sm text-[#666666] mb-4" style={{ fontFamily: 'var(--font-accent)' }}>
+                Try these popular dishes:
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                {[
+                  "Spicy Rigatoni at Carbone",
+                  "Pad Thai",
+                  "Chicken Tikka Masala",
+                  "Cacio e Pepe",
+                  "Birria Tacos",
+                ].map((dish) => (
+                  <button
+                    key={dish}
+                    onClick={() => handleSubmit({ type: "text", text: dish })}
+                    disabled={isLoading}
+                    className="px-5 py-2.5 bg-white hover:bg-[#FF6B7A] hover:text-white text-[#666666] text-sm rounded-full border border-[#FF6B7A]/20 transition-all duration-300 disabled:opacity-50 hover:shadow-lg hover:shadow-[#FF6B7A]/20"
+                    style={{ fontFamily: 'var(--font-accent)' }}
+                  >
+                    {dish}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <RecipeResult recipe={recipe} onReset={handleReset} />
+        )}
+      </div>
+    </main>
   );
 }
