@@ -112,55 +112,55 @@ export default function Home() {
 
   // Background style based on whether there are meals
   const bgStyle = upcomingMeals.length === 0
-    ? "bg-gradient-to-r from-white via-[#FFF5F5] to-[#FFE5E8]"
+    ? "bg-gradient-to-r from-white via-[#f0f7f1] to-[#e6f2e9]"
     : "bg-gray-50";
 
   return (
     <main className={`min-h-screen relative ${bgStyle}`}>
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#FF6B7A]/10 shadow-sm">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#003314]/10 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold" style={{ fontFamily: "var(--font-heading)" }}>
-              <span className="text-[#FF6B7A]">Beli</span> at Home
+              <span className="text-[#003314]">Beli</span> at Home
             </h1>
             <div className="flex items-center gap-6">
               <span
-                className="text-[#FF6B7A] font-bold"
+                className="text-[#003314] font-bold"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 My Meals
               </span>
               <Link
                 href="/discover"
-                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                className="text-[#666666] hover:text-[#003314] font-medium transition-colors"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 Discover
               </Link>
               <Link
                 href="/host"
-                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                className="text-[#666666] hover:text-[#003314] font-medium transition-colors"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 Host
               </Link>
               <Link
                 href="/pantry"
-                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                className="text-[#666666] hover:text-[#003314] font-medium transition-colors"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 Pantry
               </Link>
               <button
                 onClick={openCart}
-                className="relative p-2.5 bg-[#FF6B7A] hover:bg-[#FF5468] text-white rounded-full transition-all hover:shadow-lg hover:shadow-[#FF6B7A]/30"
+                className="relative p-2.5 bg-[#003314] hover:bg-[#004d1f] text-white rounded-full transition-all hover:shadow-lg hover:shadow-[#003314]/30"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-white text-[#FF6B7A] text-xs font-bold rounded-full flex items-center justify-center shadow-md">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-white text-[#003314] text-xs font-bold rounded-full flex items-center justify-center shadow-md">
                     {cart.length}
                   </span>
                 )}
@@ -181,7 +181,7 @@ export default function Home() {
                 className="text-5xl md:text-6xl font-bold text-[#1a1a1a] mb-6 leading-tight"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
-                Cook your <span className="text-[#FF6B7A]">favorite dishes</span>
+                Cook your <span className="text-[#003314]">favorite dishes</span>
                 <br />at home for less
               </h2>
               <p className="text-xl text-[#666666] max-w-lg mx-auto mb-12">
@@ -189,7 +189,7 @@ export default function Home() {
               </p>
               <Link
                 href="/discover"
-                className="inline-flex items-center gap-2 px-10 py-5 bg-[#FF6B7A] hover:bg-[#FF5468] text-white text-lg font-bold rounded-full transition-all hover:shadow-xl hover:shadow-[#FF6B7A]/30"
+                className="inline-flex items-center gap-2 px-10 py-5 bg-[#003314] hover:bg-[#004d1f] text-white text-lg font-bold rounded-full transition-all hover:shadow-xl hover:shadow-[#003314]/30"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,7 +214,7 @@ export default function Home() {
                     <Link
                       key={dish}
                       href={`/discover?dish=${encodeURIComponent(dish)}`}
-                      className="px-5 py-2.5 bg-white hover:bg-[#FF6B7A] hover:text-white text-[#666666] text-sm rounded-full border border-[#FF6B7A]/20 transition-all duration-300 hover:shadow-lg hover:shadow-[#FF6B7A]/20"
+                      className="px-5 py-2.5 bg-white hover:bg-[#003314] hover:text-white text-[#666666] text-sm rounded-full border border-[#003314]/20 transition-all duration-300 hover:shadow-lg hover:shadow-[#003314]/20"
                       style={{ fontFamily: "var(--font-accent)" }}
                     >
                       {dish}
@@ -225,7 +225,7 @@ export default function Home() {
 
               {/* Quick Bites from Pantry */}
               {(quickBiteSuggestions.length > 0 || isGeneratingQuickBites) && pantry.length >= 2 && (
-                <div className="mt-16 bg-white rounded-3xl shadow-sm p-8 border border-[#FF6B7A]/10 text-left">
+                <div className="mt-16 bg-white rounded-3xl shadow-sm p-8 border border-[#003314]/10 text-left">
                   <h3
                     className="text-xl font-bold text-[#1a1a1a] mb-2 flex items-center gap-2"
                     style={{ fontFamily: "var(--font-heading)" }}
@@ -246,7 +246,7 @@ export default function Home() {
                         <Link
                           key={index}
                           href={`/discover?dish=${encodeURIComponent(suggestion.name)}`}
-                          className="rounded-xl p-4 border border-gray-100 bg-gray-50 hover:border-[#FF6B7A]/30 hover:shadow-md cursor-pointer transition-all block"
+                          className="rounded-xl p-4 border border-gray-100 bg-gray-50 hover:border-[#003314]/30 hover:shadow-md cursor-pointer transition-all block"
                         >
                           <div className="flex items-start justify-between mb-2">
                             <h4 className="font-bold text-[#1a1a1a]">{suggestion.name}</h4>
@@ -281,17 +281,17 @@ export default function Home() {
             <>
               {/* Stats Header */}
               <div className="grid grid-cols-3 gap-4 mb-8">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#FF6B7A]/10">
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#003314]/10">
                   <p className="text-sm text-[#666666] mb-1" style={{ fontFamily: "var(--font-accent)" }}>
                     Meals Planned
                   </p>
                   <p className="text-3xl font-bold text-[#1a1a1a]">{upcomingMeals.length}</p>
                 </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#FF6B7A]/10">
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#003314]/10">
                   <p className="text-sm text-[#666666] mb-1" style={{ fontFamily: "var(--font-accent)" }}>
                     Grocery Cost
                   </p>
-                  <p className="text-3xl font-bold text-[#FF6B7A]">${totalGroceryCost.toFixed(2)}</p>
+                  <p className="text-3xl font-bold text-[#003314]">${totalGroceryCost.toFixed(2)}</p>
                 </div>
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-green-200 bg-green-50">
                   <p className="text-sm text-green-700 mb-1" style={{ fontFamily: "var(--font-accent)" }}>
@@ -302,7 +302,7 @@ export default function Home() {
               </div>
 
               {/* Upcoming Meals */}
-              <div className="bg-white rounded-3xl shadow-sm p-8 border border-[#FF6B7A]/10 mb-8">
+              <div className="bg-white rounded-3xl shadow-sm p-8 border border-[#003314]/10 mb-8">
                 <div className="flex items-center justify-between mb-6">
                   <h2
                     className="text-2xl font-bold text-[#1a1a1a]"
@@ -313,7 +313,7 @@ export default function Home() {
                   <div className="flex items-center gap-3">
                     <Link
                       href="/discover"
-                      className="text-sm text-[#FF6B7A] hover:text-[#FF5468] font-medium flex items-center gap-1"
+                      className="text-sm text-[#003314] hover:text-[#004d1f] font-medium flex items-center gap-1"
                       style={{ fontFamily: "var(--font-accent)" }}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -354,13 +354,13 @@ export default function Home() {
                     return (
                       <div
                         key={meal.id}
-                        className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border border-gray-100 hover:border-[#FF6B7A]/20 transition-all"
+                        className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border border-gray-100 hover:border-[#003314]/20 transition-all"
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="font-bold text-[#1a1a1a] text-lg">{meal.recipe.dish}</h3>
                             {meal.isHosting && (
-                              <span className="text-xs bg-[#FF6B7A]/10 text-[#FF6B7A] px-2 py-1 rounded-full">
+                              <span className="text-xs bg-[#003314]/10 text-[#003314] px-2 py-1 rounded-full">
                                 Hosting {meal.guestCount}
                               </span>
                             )}
@@ -426,7 +426,7 @@ export default function Home() {
 
               {/* Leftover Suggestions */}
               {leftoverSuggestions.length > 0 && (
-                <div className="bg-white rounded-3xl shadow-sm p-8 border border-[#FF6B7A]/10">
+                <div className="bg-white rounded-3xl shadow-sm p-8 border border-[#003314]/10">
                   <h3
                     className="text-xl font-bold text-[#1a1a1a] mb-6 flex items-center gap-2"
                     style={{ fontFamily: "var(--font-heading)" }}

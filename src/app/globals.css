@@ -2,8 +2,8 @@
 
 :root {
   /* Shot-Creator Design System */
-  --primary-color: #FF6B7A;
-  --primary-hover: #FF5468;
+  --primary-color: #003314;
+  --primary-hover: #004d1f;
   --text-dark: #1a1a1a;
   --text-gray: #666666;
   --bg-light: #FAFAFA;
@@ -27,7 +27,7 @@ body {
   font-family: var(--font-body);
   color: var(--text-dark);
   line-height: 1.6;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 179, 186, 1) 85%, rgba(255, 107, 122, 1) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(200, 230, 210, 1) 85%, rgba(0, 51, 20, 0.3) 100%);
   min-height: 100vh;
 }
 
@@ -50,17 +50,17 @@ button, .btn, .font-accent {
 }
 
 .glass-primary {
-  background: rgba(255, 107, 122, 0.1);
+  background: rgba(0, 51, 20, 0.1);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 107, 122, 0.3);
+  border: 1px solid rgba(0, 51, 20, 0.3);
 }
 
 /* Card styles */
 .card {
   background: var(--bg-white);
   border-radius: 16px;
-  border: 1px solid rgba(255, 107, 122, 0.1);
+  border: 1px solid rgba(0, 51, 20, 0.1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
@@ -87,7 +87,7 @@ button, .btn, .font-accent {
 .btn-primary:hover {
   background: var(--primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 107, 122, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 51, 20, 0.3);
 }
 
 /* Hero button (outline style) */
@@ -108,7 +108,7 @@ button, .btn, .font-accent {
   background: var(--primary-color);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 107, 122, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 51, 20, 0.4);
 }
 
 /* Badge style */
@@ -122,7 +122,7 @@ button, .btn, .font-accent {
   font-size: 14px;
   font-weight: 400;
   font-family: var(--font-accent);
-  border: 1px solid rgba(255, 107, 122, 0.2);
+  border: 1px solid rgba(0, 51, 20, 0.2);
 }
 
 /* Noise texture overlay */
@@ -145,6 +145,6 @@ button, .btn, .font-accent {
 .section {
   position: relative;
   padding: 100px 0;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 179, 186, 1) 85%, rgba(255, 107, 122, 1) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(200, 230, 210, 1) 85%, rgba(0, 51, 20, 0.3) 100%);
   overflow: hidden;
 }

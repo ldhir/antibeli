@@ -78,7 +78,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
   return (
     <div className="w-full max-w-5xl mx-auto space-y-10">
       {/* Savings Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#FF6B7A] via-[#FF8A94] to-[#FF6B7A] rounded-3xl p-10 text-white text-center shadow-2xl shadow-[#FF6B7A]/30">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#003314] via-[#00441a] to-[#003314] rounded-3xl p-10 text-white text-center shadow-2xl shadow-[#003314]/30">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -151,7 +151,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
       </div>
 
       {/* Add to Queue Section */}
-      <div className="bg-white rounded-3xl shadow-xl shadow-black/5 p-8 border border-[#FF6B7A]/10">
+      <div className="bg-white rounded-3xl shadow-xl shadow-black/5 p-8 border border-[#003314]/10">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           {/* Left: Cost per meal info */}
           <div>
@@ -162,7 +162,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
               Add to Your Meal Queue
             </h3>
             <p className="text-[#666666]" style={{ fontFamily: "var(--font-accent)" }}>
-              <span className="text-[#FF6B7A] font-bold text-2xl">${costPerServing.toFixed(2)}</span>
+              <span className="text-[#003314] font-bold text-2xl">${costPerServing.toFixed(2)}</span>
               <span className="text-sm"> per meal</span>
               <span className="mx-2 text-[#ccc]">|</span>
               <span className="text-sm">
@@ -181,14 +181,14 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
               <div className="flex items-center bg-gray-100 rounded-full">
                 <button
                   onClick={() => setServings(Math.max(1, servings - 1))}
-                  className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                  className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#003314] transition-colors"
                 >
                   -
                 </button>
                 <span className="w-8 text-center font-bold text-[#1a1a1a]">{servings}</span>
                 <button
                   onClick={() => setServings(servings + 1)}
-                  className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                  className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#003314] transition-colors"
                 >
                   +
                 </button>
@@ -201,7 +201,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                 onClick={handleHostingToggle}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all ${
                   isHosting
-                    ? "bg-[#FF6B7A] text-white"
+                    ? "bg-[#003314] text-white"
                     : "bg-gray-100 text-[#666666] hover:bg-gray-200"
                 }`}
                 style={{ fontFamily: "var(--font-accent)" }}
@@ -220,14 +220,14 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                 <div className="flex items-center bg-gray-100 rounded-full">
                   <button
                     onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
-                    className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                    className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#003314] transition-colors"
                   >
                     -
                   </button>
                   <span className="w-8 text-center font-bold text-[#1a1a1a]">{guestCount}</span>
                   <button
                     onClick={() => setGuestCount(guestCount + 1)}
-                    className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#FF6B7A] transition-colors"
+                    className="w-8 h-8 flex items-center justify-center text-[#666666] hover:text-[#003314] transition-colors"
                   >
                     +
                   </button>
@@ -245,7 +245,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                   ? "bg-green-500 text-white"
                   : isAlreadyQueued
                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-[#FF6B7A] hover:bg-[#FF5468] text-white hover:shadow-lg hover:shadow-[#FF6B7A]/30"
+                  : "bg-[#003314] hover:bg-[#004d1f] text-white hover:shadow-lg hover:shadow-[#003314]/30"
               }`}
             >
               {addedToQueue ? (
@@ -282,15 +282,15 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                 onClick={() => setHostingType("private")}
                 className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all ${
                   hostingType === "private"
-                    ? "border-[#FF6B7A] bg-[#FF6B7A]/5"
+                    ? "border-[#003314] bg-[#003314]/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <svg className={`w-5 h-5 ${hostingType === "private" ? "text-[#FF6B7A]" : "text-gray-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${hostingType === "private" ? "text-[#003314]" : "text-gray-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
-                  <span className={`font-bold ${hostingType === "private" ? "text-[#FF6B7A]" : "text-gray-600"}`} style={{ fontFamily: "var(--font-accent)" }}>
+                  <span className={`font-bold ${hostingType === "private" ? "text-[#003314]" : "text-gray-600"}`} style={{ fontFamily: "var(--font-accent)" }}>
                     Private
                   </span>
                 </div>
@@ -300,15 +300,15 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                 onClick={() => setHostingType("public")}
                 className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all ${
                   hostingType === "public"
-                    ? "border-[#FF6B7A] bg-[#FF6B7A]/5"
+                    ? "border-[#003314] bg-[#003314]/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <svg className={`w-5 h-5 ${hostingType === "public" ? "text-[#FF6B7A]" : "text-gray-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${hostingType === "public" ? "text-[#003314]" : "text-gray-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                   </svg>
-                  <span className={`font-bold ${hostingType === "public" ? "text-[#FF6B7A]" : "text-gray-600"}`} style={{ fontFamily: "var(--font-accent)" }}>
+                  <span className={`font-bold ${hostingType === "public" ? "text-[#003314]" : "text-gray-600"}`} style={{ fontFamily: "var(--font-accent)" }}>
                     Public
                   </span>
                 </div>
@@ -326,7 +326,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                   type="date"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
-                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-[#FF6B7A] focus:outline-none"
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-[#003314] focus:outline-none"
                 />
               </div>
               <div>
@@ -336,7 +336,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                 <select
                   value={eventTime}
                   onChange={(e) => setEventTime(e.target.value)}
-                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-[#FF6B7A] focus:outline-none"
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-[#003314] focus:outline-none"
                 >
                   <option value="12:00 PM">12:00 PM</option>
                   <option value="1:00 PM">1:00 PM</option>
@@ -358,7 +358,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
                   value={inviteMessage}
                   onChange={(e) => setInviteMessage(e.target.value)}
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF6B7A] focus:outline-none resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#003314] focus:outline-none resize-none"
                   placeholder="Write a nice invite for your friends..."
                 />
                 <div className="mt-3 p-4 bg-gray-50 rounded-xl">
@@ -406,7 +406,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
       {/* Two Column Layout */}
       <div className="grid md:grid-cols-2 gap-8">
         {/* Grocery List */}
-        <div className="bg-white rounded-3xl shadow-xl shadow-black/5 p-8 border border-[#FF6B7A]/10 transition-all duration-300 hover:shadow-2xl hover:shadow-[#FF6B7A]/10">
+        <div className="bg-white rounded-3xl shadow-xl shadow-black/5 p-8 border border-[#003314]/10 transition-all duration-300 hover:shadow-2xl hover:shadow-[#003314]/10">
           <div className="flex justify-between items-center mb-6">
             <h3
               className="text-2xl font-bold text-[#1a1a1a]"
@@ -418,7 +418,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
               onClick={handleAddToCart}
               disabled={itemsToBuy.length === 0}
               style={{ fontFamily: 'var(--font-accent)' }}
-              className="text-sm text-white bg-[#FF6B7A] hover:bg-[#FF5468] font-bold flex items-center gap-2 px-5 py-2.5 rounded-full transition-all hover:shadow-lg hover:shadow-[#FF6B7A]/30 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-sm text-white bg-[#003314] hover:bg-[#004d1f] font-bold flex items-center gap-2 px-5 py-2.5 rounded-full transition-all hover:shadow-lg hover:shadow-[#003314]/30 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -431,7 +431,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
             {groceryWithPantryStatus.map((item, index) => (
               <li
                 key={index}
-                className={`flex justify-between items-center py-3 border-b border-[#FF6B7A]/10 last:border-0 ${
+                className={`flex justify-between items-center py-3 border-b border-[#003314]/10 last:border-0 ${
                   item.inPantry ? 'opacity-60' : ''
                 }`}
               >
@@ -467,7 +467,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
             ))}
           </ul>
 
-          <div className="mt-6 pt-6 border-t-2 border-[#FF6B7A]/20">
+          <div className="mt-6 pt-6 border-t-2 border-[#003314]/20">
             {pantrySavings > 0 && (
               <div className="flex justify-between items-center mb-3 text-green-600">
                 <span className="font-medium">Pantry savings</span>
@@ -479,7 +479,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
             <div className="flex justify-between items-center">
               <span className="font-bold text-[#1a1a1a] text-lg">You&apos;ll Pay</span>
               <span
-                className="font-bold text-[#FF6B7A] text-2xl"
+                className="font-bold text-[#003314] text-2xl"
                 style={{ fontFamily: 'var(--font-accent)' }}
               >
                 ${actualCost.toFixed(2)}
@@ -489,7 +489,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
         </div>
 
         {/* Recipe Steps */}
-        <div className="bg-white rounded-3xl shadow-xl shadow-black/5 p-8 border border-[#FF6B7A]/10 transition-all duration-300 hover:shadow-2xl hover:shadow-[#FF6B7A]/10">
+        <div className="bg-white rounded-3xl shadow-xl shadow-black/5 p-8 border border-[#003314]/10 transition-all duration-300 hover:shadow-2xl hover:shadow-[#003314]/10">
           <h3
             className="text-2xl font-bold text-[#1a1a1a] mb-6"
             style={{ fontFamily: 'var(--font-heading)' }}
@@ -508,7 +508,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
             <ul className="space-y-2">
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={index} className="text-[#1a1a1a] flex items-start gap-3">
-                  <span className="text-[#FF6B7A] mt-1.5 text-lg">•</span>
+                  <span className="text-[#003314] mt-1.5 text-lg">•</span>
                   {ingredient}
                 </li>
               ))}
@@ -527,7 +527,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
               {recipe.steps.map((step, index) => (
                 <li key={index} className="flex gap-4">
                   <span
-                    className="flex-shrink-0 w-8 h-8 bg-[#FF6B7A] text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-[#FF6B7A]/30"
+                    className="flex-shrink-0 w-8 h-8 bg-[#003314] text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-[#003314]/30"
                     style={{ fontFamily: 'var(--font-accent)' }}
                   >
                     {index + 1}
@@ -545,7 +545,7 @@ export default function RecipeResult({ recipe, onReset }: RecipeResultProps) {
         <button
           onClick={onReset}
           style={{ fontFamily: 'var(--font-accent)' }}
-          className="px-10 py-4 bg-white hover:bg-[#FF6B7A] text-[#FF6B7A] hover:text-white font-bold rounded-full transition-all duration-300 border-2 border-[#FF6B7A] hover:shadow-xl hover:shadow-[#FF6B7A]/30"
+          className="px-10 py-4 bg-white hover:bg-[#003314] text-[#003314] hover:text-white font-bold rounded-full transition-all duration-300 border-2 border-[#003314] hover:shadow-xl hover:shadow-[#003314]/30"
         >
           Try Another Dish
         </button>

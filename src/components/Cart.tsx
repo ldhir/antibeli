@@ -18,7 +18,7 @@ export default function Cart() {
       {/* Cart Panel */}
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col animate-slide-in">
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b border-[#FF6B7A]/10">
+        <div className="flex justify-between items-center p-6 border-b border-[#003314]/10">
           <h2
             className="text-2xl font-bold text-[#1a1a1a]"
             style={{ fontFamily: 'var(--font-heading)' }}
@@ -54,7 +54,7 @@ export default function Cart() {
               {cart.map((item, index) => (
                 <li
                   key={`${item.item}-${index}`}
-                  className="flex justify-between items-center py-4 px-4 bg-[#FAFAFA] rounded-xl border border-[#FF6B7A]/5"
+                  className="flex justify-between items-center py-4 px-4 bg-[#FAFAFA] rounded-xl border border-[#003314]/5"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export default function Cart() {
                         {item.qty}
                       </span>
                       {item.recipeSource && (
-                        <span className="text-xs text-[#FF6B7A] bg-[#FF6B7A]/10 px-2 py-0.5 rounded-full">
+                        <span className="text-xs text-[#003314] bg-[#003314]/10 px-2 py-0.5 rounded-full">
                           {item.recipeSource}
                         </span>
                       )}
@@ -92,11 +92,11 @@ export default function Cart() {
 
         {/* Footer */}
         {cart.length > 0 && (
-          <div className="border-t border-[#FF6B7A]/10 p-6 bg-white">
+          <div className="border-t border-[#003314]/10 p-6 bg-white">
             <div className="flex justify-between items-center mb-6">
               <span className="text-lg font-bold text-[#1a1a1a]">Total</span>
               <span
-                className="text-2xl font-bold text-[#FF6B7A]"
+                className="text-2xl font-bold text-[#003314]"
                 style={{ fontFamily: 'var(--font-accent)' }}
               >
                 ${cartTotal.toFixed(2)}

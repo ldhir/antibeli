@@ -58,51 +58,51 @@ export default function HostPage() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#FF6B7A]/10 shadow-sm">
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#003314]/10 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <Link href="/">
               <h1 className="text-2xl font-bold cursor-pointer" style={{ fontFamily: "var(--font-heading)" }}>
-                <span className="text-[#FF6B7A]">Beli</span> at Home
+                <span className="text-[#003314]">Beli</span> at Home
               </h1>
             </Link>
             <div className="flex items-center gap-6">
               <Link
                 href="/"
-                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                className="text-[#666666] hover:text-[#003314] font-medium transition-colors"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 My Meals
               </Link>
               <Link
                 href="/discover"
-                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                className="text-[#666666] hover:text-[#003314] font-medium transition-colors"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 Discover
               </Link>
               <span
-                className="text-[#FF6B7A] font-bold"
+                className="text-[#003314] font-bold"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 Host
               </span>
               <Link
                 href="/pantry"
-                className="text-[#666666] hover:text-[#FF6B7A] font-medium transition-colors"
+                className="text-[#666666] hover:text-[#003314] font-medium transition-colors"
                 style={{ fontFamily: "var(--font-accent)" }}
               >
                 Pantry
               </Link>
               <button
                 onClick={openCart}
-                className="relative p-2.5 bg-[#FF6B7A] hover:bg-[#FF5468] text-white rounded-full transition-all hover:shadow-lg hover:shadow-[#FF6B7A]/30"
+                className="relative p-2.5 bg-[#003314] hover:bg-[#004d1f] text-white rounded-full transition-all hover:shadow-lg hover:shadow-[#003314]/30"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-white text-[#FF6B7A] text-xs font-bold rounded-full flex items-center justify-center shadow-md">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-white text-[#003314] text-xs font-bold rounded-full flex items-center justify-center shadow-md">
                     {cart.length}
                   </span>
                 )}
@@ -121,7 +121,7 @@ export default function HostPage() {
               className="text-4xl font-bold text-[#1a1a1a] mb-3"
               style={{ fontFamily: "var(--font-heading)" }}
             >
-              <span className="text-[#FF6B7A]">Host</span> a Dinner
+              <span className="text-[#003314]">Host</span> a Dinner
             </h2>
             <p className="text-[#666666]" style={{ fontFamily: "var(--font-accent)" }}>
               Cook for friends or discover community dinners
@@ -134,7 +134,7 @@ export default function HostPage() {
               onClick={() => setActiveTab("my-hosting")}
               className={`px-6 py-3 rounded-full font-bold transition-all ${
                 activeTab === "my-hosting"
-                  ? "bg-[#FF6B7A] text-white shadow-lg shadow-[#FF6B7A]/30"
+                  ? "bg-[#003314] text-white shadow-lg shadow-[#003314]/30"
                   : "bg-white text-[#666666] hover:bg-gray-100 border border-gray-200"
               }`}
               style={{ fontFamily: "var(--font-accent)" }}
@@ -145,7 +145,7 @@ export default function HostPage() {
               onClick={() => setActiveTab("discover")}
               className={`px-6 py-3 rounded-full font-bold transition-all ${
                 activeTab === "discover"
-                  ? "bg-[#FF6B7A] text-white shadow-lg shadow-[#FF6B7A]/30"
+                  ? "bg-[#003314] text-white shadow-lg shadow-[#003314]/30"
                   : "bg-white text-[#666666] hover:bg-gray-100 border border-gray-200"
               }`}
               style={{ fontFamily: "var(--font-accent)" }}
@@ -158,9 +158,9 @@ export default function HostPage() {
           {activeTab === "my-hosting" && (
             <div>
               {hostingMeals.length === 0 && hostingEvents.length === 0 ? (
-                <div className="bg-white rounded-3xl shadow-sm p-12 border border-[#FF6B7A]/10 text-center">
-                  <div className="w-20 h-20 bg-[#FF6B7A]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-10 h-10 text-[#FF6B7A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white rounded-3xl shadow-sm p-12 border border-[#003314]/10 text-center">
+                  <div className="w-20 h-20 bg-[#003314]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-10 h-10 text-[#003314]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
@@ -175,7 +175,7 @@ export default function HostPage() {
                   </p>
                   <Link
                     href="/discover"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#FF6B7A] hover:bg-[#FF5468] text-white font-bold rounded-full transition-all hover:shadow-lg hover:shadow-[#FF6B7A]/30"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#003314] hover:bg-[#004d1f] text-white font-bold rounded-full transition-all hover:shadow-lg hover:shadow-[#003314]/30"
                     style={{ fontFamily: "var(--font-accent)" }}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,13 +191,13 @@ export default function HostPage() {
                     return (
                       <div
                         key={meal.id}
-                        className="bg-white rounded-2xl shadow-sm p-6 border border-[#FF6B7A]/10"
+                        className="bg-white rounded-2xl shadow-sm p-6 border border-[#003314]/10"
                       >
                         <div className="flex items-start justify-between">
                           <div>
                             <div className="flex items-center gap-3 mb-2">
                               <h3 className="text-xl font-bold text-[#1a1a1a]">{meal.recipe.dish}</h3>
-                              <span className="text-xs bg-[#FF6B7A]/10 text-[#FF6B7A] px-2 py-1 rounded-full">
+                              <span className="text-xs bg-[#003314]/10 text-[#003314] px-2 py-1 rounded-full">
                                 {meal.guestCount} guests
                               </span>
                               {event && (
@@ -226,7 +226,7 @@ export default function HostPage() {
                           </div>
                           <div className="flex items-center gap-2">
                             <button
-                              className="px-4 py-2 bg-[#FF6B7A]/10 text-[#FF6B7A] hover:bg-[#FF6B7A] hover:text-white text-sm font-bold rounded-full transition-all"
+                              className="px-4 py-2 bg-[#003314]/10 text-[#003314] hover:bg-[#003314] hover:text-white text-sm font-bold rounded-full transition-all"
                               style={{ fontFamily: "var(--font-accent)" }}
                             >
                               Share Invite
@@ -270,11 +270,11 @@ export default function HostPage() {
                 {MOCK_PUBLIC_EVENTS.map((event) => (
                   <div
                     key={event.id}
-                    className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:border-[#FF6B7A]/30 hover:shadow-lg transition-all"
+                    className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:border-[#003314]/30 hover:shadow-lg transition-all"
                   >
                     {/* Event Image Placeholder */}
-                    <div className="h-32 bg-gradient-to-r from-[#FF6B7A]/20 to-[#FF8A94]/20 flex items-center justify-center">
-                      <svg className="w-12 h-12 text-[#FF6B7A]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="h-32 bg-gradient-to-r from-[#003314]/20 to-[#FF8A94]/20 flex items-center justify-center">
+                      <svg className="w-12 h-12 text-[#003314]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     </div>
@@ -285,7 +285,7 @@ export default function HostPage() {
                           <h3 className="font-bold text-[#1a1a1a] mb-1">{event.dish}</h3>
                           <p className="text-sm text-[#666666]">by {event.host}</p>
                         </div>
-                        <span className="text-lg font-bold text-[#FF6B7A]">
+                        <span className="text-lg font-bold text-[#003314]">
                           ${event.costPerPerson}
                         </span>
                       </div>
@@ -319,7 +319,7 @@ export default function HostPage() {
                           {event.spotsLeft} spots left
                         </span>
                         <button
-                          className="px-4 py-2 bg-[#FF6B7A] hover:bg-[#FF5468] text-white text-sm font-bold rounded-full transition-all hover:shadow-lg hover:shadow-[#FF6B7A]/30"
+                          className="px-4 py-2 bg-[#003314] hover:bg-[#004d1f] text-white text-sm font-bold rounded-full transition-all hover:shadow-lg hover:shadow-[#003314]/30"
                           style={{ fontFamily: "var(--font-accent)" }}
                         >
                           Join
@@ -336,7 +336,7 @@ export default function HostPage() {
                 </p>
                 <Link
                   href="/discover"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-[#FF6B7A] text-[#FF6B7A] hover:text-white font-bold rounded-full border-2 border-[#FF6B7A] transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-[#003314] text-[#003314] hover:text-white font-bold rounded-full border-2 border-[#003314] transition-all"
                   style={{ fontFamily: "var(--font-accent)" }}
                 >
                   Start Hosting

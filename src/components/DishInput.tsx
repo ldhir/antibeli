@@ -54,8 +54,8 @@ export default function DishInput({ onSubmit, isLoading }: DishInputProps) {
           style={{ fontFamily: 'var(--font-accent)' }}
           className={`px-8 py-3 rounded-full font-bold text-sm tracking-wide transition-all duration-300 ${
             inputMode === "text"
-              ? "bg-[#FF6B7A] text-white shadow-lg shadow-[#FF6B7A]/30"
-              : "bg-white text-[#666666] border border-[#FF6B7A]/20 hover:border-[#FF6B7A]/50"
+              ? "bg-[#003314] text-white shadow-lg shadow-[#003314]/30"
+              : "bg-white text-[#666666] border border-[#003314]/20 hover:border-[#003314]/50"
           }`}
         >
           Type a Dish
@@ -65,8 +65,8 @@ export default function DishInput({ onSubmit, isLoading }: DishInputProps) {
           style={{ fontFamily: 'var(--font-accent)' }}
           className={`px-8 py-3 rounded-full font-bold text-sm tracking-wide transition-all duration-300 ${
             inputMode === "image"
-              ? "bg-[#FF6B7A] text-white shadow-lg shadow-[#FF6B7A]/30"
-              : "bg-white text-[#666666] border border-[#FF6B7A]/20 hover:border-[#FF6B7A]/50"
+              ? "bg-[#003314] text-white shadow-lg shadow-[#003314]/30"
+              : "bg-white text-[#666666] border border-[#003314]/20 hover:border-[#003314]/50"
           }`}
         >
           Upload Photo
@@ -82,7 +82,7 @@ export default function DishInput({ onSubmit, isLoading }: DishInputProps) {
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder='e.g. "Spicy Rigatoni at Carbone" or "Pad Thai"'
-              className="w-full px-6 py-5 text-lg bg-white border-2 border-[#FF6B7A]/20 rounded-2xl focus:border-[#FF6B7A] focus:outline-none focus:shadow-lg focus:shadow-[#FF6B7A]/10 transition-all duration-300"
+              className="w-full px-6 py-5 text-lg bg-white border-2 border-[#003314]/20 rounded-2xl focus:border-[#003314] focus:outline-none focus:shadow-lg focus:shadow-[#003314]/10 transition-all duration-300"
               style={{ fontFamily: 'var(--font-body)' }}
               disabled={isLoading}
             />
@@ -91,7 +91,7 @@ export default function DishInput({ onSubmit, isLoading }: DishInputProps) {
             type="submit"
             disabled={!text.trim() || isLoading}
             style={{ fontFamily: 'var(--font-accent)' }}
-            className="w-full py-5 bg-[#FF6B7A] hover:bg-[#FF5468] text-white font-bold text-lg rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:shadow-[#FF6B7A]/30 hover:-translate-y-0.5"
+            className="w-full py-5 bg-[#003314] hover:bg-[#004d1f] text-white font-bold text-lg rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:shadow-[#003314]/30 hover:-translate-y-0.5"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-3">
@@ -112,10 +112,10 @@ export default function DishInput({ onSubmit, isLoading }: DishInputProps) {
       {inputMode === "image" && (
         <div className="space-y-5">
           {!imagePreview ? (
-            <label className="flex flex-col items-center justify-center w-full h-72 border-2 border-dashed border-[#FF6B7A]/30 rounded-2xl cursor-pointer hover:border-[#FF6B7A] hover:bg-[#FF6B7A]/5 transition-all duration-300 bg-white">
+            <label className="flex flex-col items-center justify-center w-full h-72 border-2 border-dashed border-[#003314]/30 rounded-2xl cursor-pointer hover:border-[#003314] hover:bg-[#003314]/5 transition-all duration-300 bg-white">
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <div className="w-16 h-16 mb-4 rounded-full bg-[#FF6B7A]/10 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-[#FF6B7A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 mb-4 rounded-full bg-[#003314]/10 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-[#003314]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -157,7 +157,7 @@ export default function DishInput({ onSubmit, isLoading }: DishInputProps) {
             onClick={handleImageSubmit}
             disabled={!imagePreview || isLoading}
             style={{ fontFamily: 'var(--font-accent)' }}
-            className="w-full py-5 bg-[#FF6B7A] hover:bg-[#FF5468] text-white font-bold text-lg rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:shadow-[#FF6B7A]/30 hover:-translate-y-0.5"
+            className="w-full py-5 bg-[#003314] hover:bg-[#004d1f] text-white font-bold text-lg rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:shadow-[#003314]/30 hover:-translate-y-0.5"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-3">
